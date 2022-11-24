@@ -283,13 +283,19 @@ int ll_push(LinkedList* this, int index, void* pElement){
 	int retorno = -1;	//ERROR
 
 	if(this != NULL && index >= 0 && index <= ll_len(this) && pElement != NULL){
-		addNode(this, index, pElement);
-		retorno = 0;
+		if(addNode(this, index, pElement) == 0){
+			retorno = 0;
+		}
 	}
 	return retorno;
 }
 
 //Elimina el Nodo y retorna
+/**
+ * \brief Elimina un Nodo de la LinkedList y lo retorna
+ * \param this Puntero a LinkedList
+ * \param index Indice del Nodo
+ */
 void* ll_pop(LinkedList* this,int index){
 	void* retorno = NULL;
 	void* auxPElement = NULL;
@@ -305,11 +311,14 @@ void* ll_pop(LinkedList* this,int index){
 	return retorno;
 }
 
-/*
- *
+/**
+ * \brief Comprueba que un elemento este contenido dentro de la LinkedList
+ * \param this Puntero a LinkedList
+ * \pElement Puntero al elemento a comprobar
+ * \return Retoran 1(CONTIENE EL ELEMENTO), 0(NO CONTIENE EL ELEMENTO) y -1(ERROR)
  */
 int ll_contains(LinkedList* this, void* pElement){
-	int retorno = -1;	//null
+	int retorno = -1;	//ERROR
 
 	if(this != NULL && pElement != NULL){
 		if(ll_indexOf(this, pElement) != -1){
@@ -318,7 +327,6 @@ int ll_contains(LinkedList* this, void* pElement){
 		else{
 			retorno = 0;	//no contiene el elemento
 		}
-
 	}
 
 	return retorno;
@@ -326,7 +334,10 @@ int ll_contains(LinkedList* this, void* pElement){
 
 //los elementos de la lista 2 esten en la lista 1
 /*
- * \brief Valida que los elementos de una LinkedList esten en otra LinkedList
+ * \brief Valida que los elementos de la LinkedList 2 esten en la LinkedList 1
+ * \param this Puntero a LinkedList 1
+ * \param this Puntero a LinkedList 2
+ * \return Retorna 1(CONTIENE), 0(NO CONTIENE) y -1(ERROR)
  */
 int ll_containsAll(LinkedList* this,LinkedList* this2){
 	int retorno = -1;
@@ -353,10 +364,10 @@ int ll_containsAll(LinkedList* this,LinkedList* this2){
 
 /**
  * \brief Retorna una nueva lista que tenga los elementos en un rango determinado
- * \param *this
- * \param from
- * \param to
- * \return
+ * \param *this Puntero a LinkedList
+ * \param from Indice desde el que empeiza la inclusion
+ * \param to Indice donde termina la inclusion
+ * \return Retorna un puntero a la sub LinkedList o NULL
  */
 LinkedList* ll_subList(LinkedList* this,int from,int to){
 	LinkedList* subList = NULL;
@@ -382,8 +393,8 @@ LinkedList* ll_subList(LinkedList* this,int from,int to){
 
 /**
  * \brief Clona una LinkedList
- * \param *this
- * \return
+ * \param *this Puntero a LinkedList
+ * \return Retorna un puntero a LinkedList o NULL
  */
 LinkedList* ll_clone(LinkedList* this){
 	LinkedList* clonList = NULL;
