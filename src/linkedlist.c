@@ -28,7 +28,7 @@ LinkedList* ll_newLinkedList(void)
  */
 int ll_len(LinkedList* this)
 {
-    int retorno = -1;
+    int retorno = -1;	//ERROR
 
     if(this != NULL){
         retorno = this->size;
@@ -40,7 +40,7 @@ int ll_len(LinkedList* this)
  * \brief Recibe un index y devuelve el nodo correspondiente en la LinkedList
  * \param this Puntero a LinkedList
  * \param nodeIndex Indice del Nodo a buscar
- * \return Retorna el size de la LinkedList o -1(ERROR)
+ * \return Retorna un puntero al Node encontrado o NULL
  */
 static Node* getNode(LinkedList* this, int nodeIndex)
 {
@@ -116,18 +116,22 @@ int ll_add(LinkedList* this, void* pElement)
     return retorno;
 }
 
+/*
+ *  \brief Busca un elemento dentro de la LinkedList mediante un index
+ *  \param this Puntero a la LinkedList
+ *  \param index Indice a buscar
+ *  \return Retorna un puntero al elemento o NULL
+ */
 void* ll_get(LinkedList* this, int index)
 {
     Node* auxNode = NULL;
     void* pRetorno = NULL;
 
-    if(this != NULL && index >= 0 && index < ll_len(this))
-    {
-
-       auxNode = getNode(this, index); //Validar.
-
-       pRetorno = auxNode->pElement;
-
+    if(this != NULL && index >= 0 && index < ll_len(this)){
+       auxNode = getNode(this, index);
+       if(auxNode != NULL){
+           pRetorno = auxNode->pElement;
+       }
     }
 
     return pRetorno;
@@ -135,17 +139,22 @@ void* ll_get(LinkedList* this, int index)
 
 /*
  * \brief Setea un elemento en un indice
+ * \param this Puntero a la LinkedList
+ * \param index Indice de la LinkedList
+ * \param pElement Puntero al elemento a setear
+ * \return Retorna 0(EXITO) o  -1(ERROR)
  */
 int ll_set(LinkedList* this, int index, void* pElement)
 {
     int retorno = -1;
     Node* auxNode = NULL;
 
-    if(this != NULL && pElement != NULL && index >= 0 && index < ll_len(this))
-    {
+    if(this != NULL && pElement != NULL && index >= 0 && index < ll_len(this)){
         auxNode = getNode(this, index);
-        auxNode->pElement = pElement;
-        retorno = 0;
+        if(auxNode != NULL){
+            auxNode->pElement = pElement;
+            retorno = 0;
+        }
     }
     return retorno;
 }
@@ -166,15 +175,17 @@ int ll_remove(LinkedList* this,int index)
     {
         auxNode = getNode(this,index);
 
-        if(index==0){
-            this->pFirstNode=auxNode->pNextNode;
-            this->size--;
-        }else{
-            auxPrevNode = getNode(this,index-1);
-            auxPrevNode->pNextNode = auxNode->pNextNode;
-            this->size--;
+        if(auxNode != NULL){
+            if(index==0){
+                this->pFirstNode=auxNode->pNextNode;
+                this->size--;
+            }else{
+                auxPrevNode = getNode(this,index-1);
+                auxPrevNode->pNextNode = auxNode->pNextNode;
+                this->size--;
+            }
+            retorno = 0;
         }
-        retorno=0;
     }
 
     return retorno;
@@ -209,10 +220,11 @@ int ll_deleteLinkedList(LinkedList* this){
 	int retorno = -1;	//ERROR
 
 	if(this != NULL){
-		ll_clear(this);
-		free(this);
+		if(ll_clear(this) == 0){
+			free(this);
 
-		retorno = 0;	//EXITO
+			retorno = 0;	//EXITO
+		}
 	}
 
 	return retorno;
@@ -244,9 +256,9 @@ int ll_indexOf(LinkedList* this, void* pElement){
 }
 
 /*
- * \brief
+ * \brief Comprueba si la LinkedList esta vacia
  * \param *this Puntero a memoria de la LinkedList
- * \return Retorna 0 (NOT EMPTY) - 1 (EMPTY) - 1(ERROR)
+ * \return Retorna 0 (NOT EMPTY), 1 (EMPTY) - 1(ERROR)
  */
 int ll_isEmpty(LinkedList* this){
 	int retorno = -1;	//ERROR
@@ -263,7 +275,8 @@ int ll_isEmpty(LinkedList* this){
 /*
  * \brief
  * \param *this Puntero a memoria de la LinkedList
- * \param index Indice de
+ * \param index Indice
+ * \param pElement Puntero al elemento
  * \return Retorna  -1(ERROR)
  */
 int ll_push(LinkedList* this, int index, void* pElement){

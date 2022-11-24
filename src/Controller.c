@@ -304,7 +304,6 @@ int controller_generarInformeModoTexto(char* path , LinkedList* pListVentas){
 						cantVentasMayorDe20000++;
 					}
 				}
-
 				//ll_count(pListVentas, venta_precioMayorA(auxVenta));
 
 				if(strcmp(auxVenta->modelo, "Camaro") == 0){
