@@ -1,0 +1,8 @@
+********************
+Informe de ventas
+********************
+- Cantidad de unidades vendidas totales: 2430
+- Cantidad de ventas por un monto mayor a $10000: 95
+- Cantidad de ventas por un monto mayor a $20000: 88
+- Cantidad de Camaro vendidos: 1
+********************
